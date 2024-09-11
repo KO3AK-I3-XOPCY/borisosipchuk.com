@@ -43,6 +43,9 @@ jobs:
           aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_STYLES/"
         fi
 
+        echo "$DIRECTORY_STYLES/$FILE_NAME_STYLE"
+        echo "s3://$BUCKET_NAME/$DIRECTORY_STYLES/"
+
         # Upload the file to the directory
         aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
         
