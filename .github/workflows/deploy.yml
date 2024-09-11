@@ -22,4 +22,42 @@ jobs:
 
     - name: Sync files to S3
       run: |
-        aws s3 cp index.html s3://borisosipchuk.com/index.html --acl public-read
+        BUCKET_NAME="borisosipchuk.com"
+        DIRECTORY_STYLES="styles"
+        DIRECTORY_FILES="files"
+        FILE_NAME_INDEX="index.html"
+        FILE_NAME_STYLE="borisosipchuk.css"
+        FILE_NAME_RESUME_DOCX="2024-09_Boris_Osipchuk_Resume.docx"
+        FILE_NAME_RESUME_PDF="2024-09_Boris_Osipchuk_Resume.pdf"
+
+        aws s3 cp "$FILE_NAME_INDEX" "s3://$BUCKET_NAME/" --acl public-read
+        # aws s3 cp index.html s3://borisosipchuk.com/index.html --acl public-read
+
+        # Check if the stylesdirectory exists
+        if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES" 2>&1 | grep -q 'PRE'; then
+          echo "Directory exists, uploading the file..."
+        else
+          echo "Directory does not exist, creating the directory..."
+          
+          # Create the directory by uploading an empty object with a trailing slash
+          aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_STYLES"
+        fi
+
+        # Upload the file to the directory
+        aws s3 cp "$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
+        
+
+        # Check if the files directory exists
+        if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_FILES" 2>&1 | grep -q 'PRE'; then
+          echo "Directory exists, uploading the file..."
+        else
+          echo "Directory does not exist, creating the directory..."
+          
+          # Create the directory by uploading an empty object with a trailing slash
+          aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_FILES"
+        fi
+
+        # Upload the file to the directory
+        aws s3 cp "$FILE_NAME_RESUME_DOCX" "s3://$BUCKET_NAME/$DIRECTORY_FILES/" --acl public-read
+        aws s3 cp "$FILE_NAME_RESUME_PDF" "s3://$BUCKET_NAME/$DIRECTORY_FILES/" --acl public-read
+        
