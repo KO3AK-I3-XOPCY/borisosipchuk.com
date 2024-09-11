@@ -40,7 +40,7 @@ jobs:
           echo "Directory does not exist, creating the directory..."
           
           # Create the directory by uploading an empty object with a trailing slash
-          aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_STYLES"
+          aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_STYLES/"
         fi
 
         # Upload the file to the directory
@@ -54,7 +54,7 @@ jobs:
           echo "Directory does not exist, creating the directory..."
           
           # Create the directory by uploading an empty object with a trailing slash
-          aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_FILES"
+          aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_FILES/"
         fi
 
         # Upload the file to the directory
