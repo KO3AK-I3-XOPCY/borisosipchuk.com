@@ -55,9 +55,9 @@ jobs:
           aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_FILES"
         fi       
 
-        # Upload the file(s) to the directory
-        aws s3 cp "$DIRECTORY_FILES/$FILE_NAME_RESUME_DOCX" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
-        aws s3 cp "$DIRECTORY_FILES/$FILE_NAME_RESUME_PDF" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
+        # Upload the file(s) form github location to the AWS directory
+        aws s3 cp "$DIRECTORY_FILES/$FILE_NAME_RESUME_DOCX" "s3://$BUCKET_NAME/$DIRECTORY_FILES/" --acl public-read
+        aws s3 cp "$DIRECTORY_FILES/$FILE_NAME_RESUME_PDF" "s3://$BUCKET_NAME/$DIRECTORY_FILES/" --acl public-read
         
 
 
