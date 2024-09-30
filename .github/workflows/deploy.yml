@@ -30,16 +30,17 @@ jobs:
         FILE_NAME_RESUME_DOCX="2024-09_Boris_Osipchuk_Resume.docx"
         FILE_NAME_RESUME_PDF="2024-09_Boris_Osipchuk_Resume.pdf"
 
+        # copy the index file
         aws s3 cp "$FILE_NAME_INDEX" "s3://$BUCKET_NAME/" --acl public-read
         
         # Check if the styles directory exists
         if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" 2>&1 | grep -q 'PRE'; then
-          echo "Directory '$DIRECTORY_STYLES' exists in bucket '$BUCKET_NAME', uploading the file..."
+          echo "Directory '$DIRECTORY_STYLES/' exists in bucket '$BUCKET_NAME', uploading the file..."
         else
-          echo "'$DIRECTORY_STYLES' does not exist in bucket '$BUCKET_NAME'"
+          echo "'$DIRECTORY_STYLES/' does not exist in bucket '$BUCKET_NAME'"
           
           # Use aws s3api to explicitly create the directory (prefix)
-          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_STYLES"
+          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_STYLES/"
         fi       
 
         # Upload the file(s) to the directory
@@ -47,12 +48,12 @@ jobs:
 
         # Check if the files directory exists
         if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_FILES/" 2>&1 | grep -q 'PRE'; then
-          echo "Directory '$DIRECTORY_FILES' exists in bucket '$BUCKET_NAME', uploading the file..."
+          echo "Directory '$DIRECTORY_FILES/' exists in bucket '$BUCKET_NAME', uploading the file..."
         else
-          echo "'$DIRECTORY_FILES' does not exist in bucket '$BUCKET_NAME'"
+          echo "'$DIRECTORY_FILES/' does not exist in bucket '$BUCKET_NAME'"
           
           # Use aws s3api to explicitly create the directory (prefix)
-          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_FILES"
+          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_FILES/"
         fi       
 
         # Upload the file(s) form github location to the AWS directory
