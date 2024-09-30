@@ -42,7 +42,7 @@ jobs:
           # aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
           
           # Use aws s3api to explicitly create the directory (prefix)
-          aws s3api put-object --bucket "$DIRECTORY_STYLES/$FILE_NAME_STYLE" --key "$DIRECTORY"
+          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_STYLES/$FILE_NAME_STYLE"
         fi       
 
         # Upload the file to the directory
