@@ -33,6 +33,11 @@ jobs:
 
         # copy the index file
         aws s3 cp "$FILE_NAME_INDEX" "s3://$BUCKET_NAME/" --acl public-read
+
+        # capturing the output of AWS CLI
+        S3_LS_OUTPUT=$(aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" 2>&1)
+        echo "Output of aws s3 ls command:"
+        echo "$S3_LS_OUTPUT"
         
         # Check if the styles directory exists
         if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" 2>&1 | grep -q 'PRE'; then
