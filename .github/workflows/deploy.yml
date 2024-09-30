@@ -34,19 +34,30 @@ jobs:
         
         # Check if the styles directory exists
         if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" 2>&1 | grep -q 'PRE'; then
-          echo "Directory exists, uploading the file..."
+          echo "Directory '$DIRECTORY_STYLES' exists in bucket '$BUCKET_NAME', uploading the file..."
         else
-          echo "Directory does not exist, creating the directory..."
-          
-          # Create the directory by uploading an empty object with a trailing slash
-          # aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
+          echo "'$DIRECTORY_STYLES' does not exist in bucket '$BUCKET_NAME'"
           
           # Use aws s3api to explicitly create the directory (prefix)
-          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_STYLES/$FILE_NAME_STYLE"
+          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_STYLES"
         fi       
 
-        # Upload the file to the directory
-        #aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
+        # Upload the file(s) to the directory
+        aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
+
+        # Check if the files directory exists
+        if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_FILES/" 2>&1 | grep -q 'PRE'; then
+          echo "Directory '$DIRECTORY_FILES' exists in bucket '$BUCKET_NAME', uploading the file..."
+        else
+          echo "'$DIRECTORY_FILES' does not exist in bucket '$BUCKET_NAME'"
+          
+          # Use aws s3api to explicitly create the directory (prefix)
+          aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_FILES"
+        fi       
+
+        # Upload the file(s) to the directory
+        aws s3 cp "$DIRECTORY_FILES/$FILE_NAME_RESUME_DOCX" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
+        aws s3 cp "$DIRECTORY_FILES/$FILE_NAME_RESUME_PDF" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
         
 
 
