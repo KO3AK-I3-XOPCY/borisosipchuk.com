@@ -31,23 +31,19 @@ jobs:
         FILE_NAME_RESUME_PDF="2024-09_Boris_Osipchuk_Resume.pdf"
 
         aws s3 cp "$FILE_NAME_INDEX" "s3://$BUCKET_NAME/" --acl public-read
-        # aws s3 cp index.html s3://borisosipchuk.com/index.html --acl public-read
-
-        echo "$DIRECTORY_STYLES/$FILE_NAME_STYLE"
-        echo "s3://$BUCKET_NAME/$DIRECTORY_STYLES/"
         
-        # Check if the stylesdirectory exists
+        # Check if the styles directory exists
         if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" 2>&1 | grep -q 'PRE'; then
           echo "Directory exists, uploading the file..."
         else
           echo "Directory does not exist, creating the directory..."
           
           # Create the directory by uploading an empty object with a trailing slash
-          #aws s3 cp /dev/null "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
-          aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
-        fi
-
-       
+          # aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
+          
+          # Use aws s3api to explicitly create the directory (prefix)
+          aws s3api put-object --bucket "$DIRECTORY_STYLES/$FILE_NAME_STYLE" --key "$DIRECTORY"
+        fi       
 
         # Upload the file to the directory
         #aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
