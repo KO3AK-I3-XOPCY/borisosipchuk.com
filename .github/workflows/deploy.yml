@@ -33,14 +33,10 @@ jobs:
 
         # copy the index file
         aws s3 cp "$FILE_NAME_INDEX" "s3://$BUCKET_NAME/" --acl public-read
-
-        # capturing the output of AWS CLI
-        S3_LS_OUTPUT=$(aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" 2>&1)
-        echo "Output of aws s3 ls command:"
-        echo "$S3_LS_OUTPUT"
-        
+      
         # Check if the styles directory exists
-        if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" 2>&1 | grep -q 'PRE'; then
+        # Note: don't append '/' to the end, as that will list the files in the director or not, but it will not display 'PRE' if indeed the dir was found.        
+        if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES" 2>&1 | grep -q 'PRE'; then
           echo "Directory '$DIRECTORY_STYLES/' exists in bucket '$BUCKET_NAME', uploading the file..."
         else
           echo "'$DIRECTORY_STYLES/' does not exist in bucket '$BUCKET_NAME'"
@@ -53,7 +49,8 @@ jobs:
         aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
 
         # Check if the files directory exists
-        if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_FILES/" 2>&1 | grep -q 'PRE'; then
+        # Note: don't append '/' to the end, as that will list the files in the director or not, but it will not display 'PRE' if indeed the dir was found.
+        if aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_FILES" 2>&1 | grep -q 'PRE'; then
           echo "Directory '$DIRECTORY_FILES/' exists in bucket '$BUCKET_NAME', uploading the file..."
         else
           echo "'$DIRECTORY_FILES/' does not exist in bucket '$BUCKET_NAME'"
