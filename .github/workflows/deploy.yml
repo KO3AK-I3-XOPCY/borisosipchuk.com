@@ -45,12 +45,8 @@ jobs:
           aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_STYLES/"
         fi       
 
-        # Capture the output of the aws s3 ls command
-        S3_OUTPUT=$(aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES" 2>&1)
-        
-        # Display the captured output
-        echo "AWS S3 ls command output:"
-        echo "$S3_OUTPUT"
+        aws s3api list-objects --bucket "$BUCKET_NAME" --prefix "$DIRECTORY_STYLES" --output json > s3_output.json
+        cat s3_output.json
 
         # Upload the file(s) to the directory
         aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
