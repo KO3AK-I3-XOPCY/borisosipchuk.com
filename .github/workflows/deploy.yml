@@ -32,7 +32,7 @@ jobs:
         FILE_NAME_RESUME_PDF="2024-09_Boris_Osipchuk_Resume.pdf"
 
         # copy the index file
-        aws s3 cp "$FILE_NAME_INDEX" "s3://$BUCKET_NAME/" --acl public-read
+        aws s3 cp "$FILE_NAME_INDEX" "s3://$BUCKET_NAME/" --acl public-read        
       
         # Check if the styles directory exists
         # Note: don't append '/' to the end, as that will list the files in the director or not, but it will not display 'PRE' if indeed the dir was found.        
@@ -44,6 +44,13 @@ jobs:
           # Use aws s3api to explicitly create the directory (prefix)
           aws s3api put-object --bucket "$BUCKET_NAME" --key "$DIRECTORY_STYLES/"
         fi       
+
+        # Capture the output of the aws s3 ls command
+        S3_OUTPUT=$(aws s3 ls "s3://$BUCKET_NAME/$DIRECTORY_STYLES" 2>&1)
+        
+        # Display the captured output
+        echo "AWS S3 ls command output:"
+        echo "$S3_OUTPUT"
 
         # Upload the file(s) to the directory
         aws s3 cp "$DIRECTORY_STYLES/$FILE_NAME_STYLE" "s3://$BUCKET_NAME/$DIRECTORY_STYLES/" --acl public-read
